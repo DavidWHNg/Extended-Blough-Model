@@ -1,4 +1,3 @@
-rm(list=ls())
 options(scipen=999)
 library(dplyr)
 library(ggplot2)
@@ -46,6 +45,7 @@ num_blocks <- 6
 #saving data
 savetraining <-  TRUE
 savetest <-  TRUE
+saveplot <- TRUE
 
 #Misc.
 digits <-  20
@@ -227,35 +227,36 @@ colnames(testdata_means) <- c("group","stimname","response")
 testdata_means$group <- factor(testdata_means$group)
 
 #Save data
-setwd("../Simulated Data")
+dir.create("Simulated Data")
 if (savetraining == TRUE) {
-  write.table(trainingdata,file=paste0("EB_sim_trainingdata_",name,"_",(Sys.Date()),".txt"),sep="\t",row.names=FALSE)  
+  write.table(trainingdata,file=paste0("Simulated Data/EB_sim_trainingdata_",name,"_",(Sys.Date()),".txt"),sep="\t",row.names=FALSE)  
 }
 if (savetest == TRUE) {
-  write.table(testdata,file=paste0("EB_sim_testdata_",name,"_",(Sys.Date()),".txt"),sep="\t",row.names=FALSE)  
+  write.table(testdata,file=paste0("Simulated Data/EB_sim_testdata_",name,"_",(Sys.Date()),".txt"),sep="\t",row.names=FALSE)  
 }
 
 #Plotting
-testdata_means
-setwd("../Plots")
+dir.create("Plots")
 
-jpeg(filename = paste0(name,"_",format(Sys.time(), "%d-%b-%Y %H.%M.%S"),".jpeg"),
-     width = 4500, height = 1800, units = "px", pointsize = 12,
-     quality = 1000,res=200,
-     bg = "white")
+if (saveplot == TRUE) {
+  jpeg(filename = paste0("Plots/",name,"_",format(Sys.time(), "%d-%b-%Y %H.%M.%S"),".jpeg"),
+       width = 4500, height = 1800, units = "px", pointsize = 12,
+       quality = 1000,res=200,
+       bg = "white")
+  
+  ggplot(testdata_means, 
+         aes(y = response, 
+             x = factor(stimname),
+             group = group,
+             color = group
+         )) + 
+    geom_line(lwd=2) +  
+    geom_point(lwd=7) +
+    ylim (-1,1) +
+    xlab("stimulus") + ylab("associative strength") +
+    theme_gray(base_size = 30) +
+    scale_color_manual(values=c('steelblue','hotpink')) +
+    scale_x_discrete(labels = c(levels(testdata_means$stimname)))
 
-ggplot(testdata_means, 
-       aes(y = response, 
-           x = factor(stimname),
-           group = group,
-           color = group
-       )) + 
-  geom_line(lwd=2) +  
-  geom_point(lwd=7) +
-  ylim (-1,1) +
-  xlab("stimulus") + ylab("associative strength") +
-  theme_gray(base_size = 30) +
-  scale_color_manual(values=c('steelblue','hotpink')) +
-  scale_x_discrete(labels = c(levels(testdata_means$stimname)))
-
+}
 dev.off()

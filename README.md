@@ -1,6 +1,6 @@
 # Extended Blough Model
 
-This code is to simulate training and test data as predicted by our Extended Blough Model. There are several parameters that can be changed by users to predict generalization for a variety of experimental designs. This code was designed to simulate training and test for 2 groups, but can be used to simulate a single group. As an example, the initial values have been inputed to simulate Experiment 1A. 
+This code is to simulate training and test data as predicted by our Extended Blough Model detailed in Ng, Lee, Hayes, Lovibond (under review). Generalisation following symmetrical intradimensional discrimination training. There are several parameters that can be changed by users to predict generalization for a variety of experimental designs. This code was designed to simulate training and test for 2 groups, but can be used to simulate a single group. As an example, the initial values have been inputed to simulate Experiment 1A and plot Experiment 1A's simulated data similar to Figure 6 of our paper. 
 
 Details for each parameter are as follows:
 
@@ -45,6 +45,7 @@ num_blocks <- sets how many training blocks to simulate
 ### saving data
 savetraining <-  set to TRUE to save a .txt file of training data  
 savetest <-  set to TRUE to save .txt file of test data  
+saveplot <-  set to TRUE to save plot of test data
 
 ### misc.
 digits <-  rounding for elemental activation function. Decrease digits to limit the spreading activation of each stimulus, or use if elemental activation functions substantially cut off for stimuli at ends of dimensions  
